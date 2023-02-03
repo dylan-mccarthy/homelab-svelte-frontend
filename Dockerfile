@@ -1,4 +1,4 @@
-FROM node:18
+FROM node:16-alpine
 
 # Set the working directory in the container
 WORKDIR /app
@@ -15,5 +15,10 @@ COPY . .
 # Build the Svelte app
 RUN npm run build
 
+FROM node:16-alpine
+COPY --from=0 /app .
+COPY . .
+
+EXPOSE 3000
 # Specify the command to run when the container starts
-CMD [ "npm", "start" ]
+CMD [ "node", "./build" ]
